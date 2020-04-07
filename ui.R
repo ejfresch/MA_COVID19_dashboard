@@ -2,21 +2,28 @@
 
 
 ui = fluidPage(
-  
-  tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "myTheme.css")
-  ),
+  titlePanel(NULL, windowTitle = "COVID-19 outbreak in Massachusetts"),
+
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href="https://fonts.googleapis.com/css?family=Roboto&display=swap")
   ),
   
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap")
+  ),
+  
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "myTheme.css")
+  ),
+  tags$head(includeHTML("google_analytics.html")),
+  
   fluidRow(
     column(10,offset=1, align="left",
     # title
-    titlePanel("COVID-19 outbreak in Massachusetts"),
+    h1(id="main_title","COVID-19 outbreak in Massachusetts"),
     br(),
     h2("Epidemic curve of the number of cases"),
-    HTML('<p>The following graph shows the number of new COVID-19 cases reported in each county (or All counties) as a function of time. This is a weekly epidemiological curve, to try to avoid some of the fluctuations in the data. To extrapolate some trends you should look at multiple observations. You can learn more by reading the Wikipedia page on the <a href="https://en.wikipedia.org/wiki/Epidemic_curve">epidemic curve</a>.</p>'),
+    HTML('<p>The following graph shows the number of new COVID-19 cases reported in each county (or All counties) as a function of time. This is a weekly epidemiological curve, to try to avoid some of the fluctuations in the data. To extrapolate some trends you should look at multiple observations.</p>'),
     plotlyOutput("epi_curve"),
     br(),
     )),
@@ -32,7 +39,7 @@ ui = fluidPage(
            HTML('Data source: <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page.
        Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),    br(),
     br(),
-    HTML("<b>NOTE</b>: if you do not know to which county your city/town belongs to, you can use the map below to find out."),
+    HTML("<b>NOTE</b>: if you do not know to which county your city/town belongs to, you can use the map below to find out. The data for the Dukes and Nantucket counties are combined in the reports of the MA Department of Public Health. Here we display the combined number of cases (Dukes + Nantucket) for both counties."),
     br(),
     br(),
     br(),
@@ -81,7 +88,7 @@ ui = fluidPage(
            h2("Growth curve of the number of cases"),
            HTML("<p>The following graph shows the number of total 
        cases of COVID-19 in Massachusetts as a function of
-       time (dark grey curve). The red and organge curves show 
+       time (dark grey curve). The red and orange curves show 
        the theoretical growth curves if the doubling time 
        of the cases was three or four days, respectively.</p>"),
            plotlyOutput("curves"),
@@ -100,7 +107,7 @@ ui = fluidPage(
        Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),
            br(),
            br(),
-           HTML("<b>NOTE</b>: the red and orange curves were calculated using the number of cases reported on Mar 9 (n = 43). This is a bit arbitrary, but please just consider them as references to follow the curve as it flattens."),
+           HTML("<b>NOTE</b>: the red and orange curves were calculated using the number of cases reported on Mar 9 (n = 43). This is a bit arbitrary, so please consider them as references to follow the curve as it flattens."),
            br(),
            br(),
            br(),
@@ -110,7 +117,7 @@ ui = fluidPage(
   fluidRow(
     column(10,offset=1, align="left",
            h2("Updates and feedback"),
-           HTML('<p>The graphs are automatically updated using the data available on the <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page. If you find any mistake, or you think this app can be improved, plase send an e-mail to <img src="email.png"/></p>'),
+           HTML('<p>The graphs are automatically updated using the data available on the <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page. If you find any mistake or you think this app can be improved, plase send an e-mail to <img src="email.png"/></p>'),
            br(),
     )),
   
@@ -120,7 +127,7 @@ ui = fluidPage(
     column(10, offset=1, align="left",
          
            br(),
-           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last update: 2020-04-07'),
+           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-07'),
            br(),
            br()
           

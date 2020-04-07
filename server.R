@@ -108,6 +108,8 @@ server = function(input, output) {
       choice = input$choose_county
       
       cases_by_county = read.csv("data/cases_by_county.csv",check.names = FALSE, stringsAsFactors = FALSE)
+      
+      
       # sum the data for all the counties / I need to subtract the data of Dukes or Nuntacket because they are
       # duplicated in order to display the map correctly
       data_all_counties=c(colSums(cases_by_county[,1:(length(cases_by_county)-1)]) -

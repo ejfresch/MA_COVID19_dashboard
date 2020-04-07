@@ -2,3 +2,12 @@ div{
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
 }
+
+#main_title{
+  font-size:40px;
+  font-family: 'Lato', sans-serif;
+}
+
+h2{
+  font-family: 'Lato', sans-serif;
+}
