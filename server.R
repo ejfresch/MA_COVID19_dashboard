@@ -4,29 +4,23 @@ server = function(input, output) {
   
   output$leaflet_chloropleth = renderLeaflet({
     
-    df_leaflet = ma_spdf
-    
     leaflet(df_leaflet) %>% 
       addTiles()  %>% 
       fitBounds(~min(-70), ~min(41.5), ~max(-73.5), ~max(43))
   })
   
    observe({
-     target_date = as.character(input$date)
-   
-     df_final=read.csv("data/cases_by_county.csv",check.names = FALSE)
-     df_leaflet = ma_spdf
-     df_leaflet@data = left_join(df_leaflet@data, df_final,by = "NAME")
+     target_date = req(as.character(input$date))
      
      mybins = c(0,1,10,100,1000,10000,100000)
      mypalette = colorBin( palette="YlOrRd", domain=df_leaflet@data[,target_date], na.color="transparent", bins=mybins)
      
      mytag = paste(
-       "County: ", df_leaflet@data$NAME,"<br/>", 
-       "Confirmed: ", df_leaflet@data[,target_date], "<br/>", 
-       sep="") %>%
-       lapply(htmltools::HTML)
-     
+        "County: ", df_leaflet@data$NAME,"<br/>", 
+        "Cases: ", df_leaflet@data[,target_date], "<br/>", 
+        sep="") %>%
+        lapply(htmltools::HTML)
+   
      leafletProxy("leaflet_chloropleth") %>%
        clearShapes() %>%
        addPolygons(data =df_leaflet, fillColor = ~mypalette(df_leaflet@data[,target_date]),
@@ -49,28 +43,7 @@ server = function(input, output) {
 
    output$curves = renderPlotly({
       
-      df_final=read.csv("data/cases_by_county.csv",check.names = FALSE)
-     
-     ma = colSums(df_final[,1:(ncol(df_final)-1)])
-     # doubling every day
-     n_0 = as.numeric(ma[5])
-     #lambda=2
-     #t=0:(nrow(df_final)-1)
-     #n = n_0 * lambda^t
-     # doubling every two days
-     lambda=2
-     t=0:(ncol(df_final)-6)
-     n = n_0 * lambda^(t/3)
-     doubl_3_days = c(rep(0,4),n)
-     # doubling every three days
-     lambda=2
-     t=0:(ncol(df_final)-6)
-     n = n_0 * lambda^(t/4)
-     doubl_4_days = c(rep(0,4),n)
-     
-     df_to_plot=data.frame(
-       Date=as.Date(colnames(df_final[1:(ncol(df_final)-1)])),
-       Cases=ma)
+      
      
      choice = input$choose_type
      if(choice == "Linear"){
@@ -104,25 +77,11 @@ server = function(input, output) {
    
    output$epi_curve = renderPlotly({
       
-
-      choice = input$choose_county
+      selected_county = input$choose_county
       
-      cases_by_county = read.csv("data/cases_by_county.csv",check.names = FALSE, stringsAsFactors = FALSE)
-      
-      
-      # sum the data for all the counties / I need to subtract the data of Dukes or Nuntacket because they are
-      # duplicated in order to display the map correctly
-      data_all_counties=c(colSums(cases_by_county[,1:(length(cases_by_county)-1)]) -
-                             as.numeric(cases_by_county[cases_by_county$NAME=="Dukes", 1:(length(cases_by_county)-1)]),
-                          "All")
-      cases_by_county=rbind(cases_by_county,data_all_counties)
-            
-      selected_county=choice
 
       numbers = cases_by_county[cases_by_county$NAME==selected_county,]
          
-   
-      
       n_cases_selected_county=as.numeric(numbers[1:(length(numbers)-1)])
       vect_for_diff=c(0,n_cases_selected_county[1:(length(n_cases_selected_county)-1)])
       vect_new_cases = n_cases_selected_county - vect_for_diff

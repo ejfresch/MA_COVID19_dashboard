@@ -128,7 +128,7 @@ ui = fluidPage(
                       " deaths attributed to COVID-19 were reported in Massachusetts. This number corresponds to ",
                       format(round(perc_vs_num_cases, 1), nsmall = 1),
                       "% of the total number of cases and roughly to ",
-                      format(round(perc_entire_population, 2), nsmall = 2),
+                      format(round(perc_entire_population, 3), nsmall = 3),
                       '% of the entire Massachusetts population (Massachusetts population estimates 2019: 6,892,503; source: <a href="https://www.census.gov/quickfacts/MA">census.gov</a>). ',
                       "The following graphs shows the number of deaths per week:",
                       sep="")),

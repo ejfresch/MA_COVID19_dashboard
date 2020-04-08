@@ -23,7 +23,7 @@ raw_data= raw_data_wiki %>%
   html_table(fill = TRUE)
 
 
-# Formatthe data
+# Format the data
 library(lubridate)
 data_cleaned = raw_data[2:(nrow(raw_data)-2),1:(ncol(raw_data)-2)]
 colnames(data_cleaned) =raw_data[1,1:(ncol(raw_data)-2)] 
@@ -80,6 +80,12 @@ write.csv(df_final,file="data/cases_by_county.csv",quote=FALSE,row.names=FALSE)
 date_latest_avail_data=colnames(df_final)[ncol(df_final)-1]
 
 
+# DATA FOR THE MAP
+df_leaflet = ma_spdf
+df_leaflet@data = left_join(df_leaflet@data, df_final,by = "NAME")
+
+
+# DATA FOR THE CURVE OF THE NUM OF DEATHS
 raw_data_table_deaths = raw_data_wiki %>% 
   html_node(xpath = '/html/body/div[3]/div[3]/div[4]/div/table[3]') %>%
   html_table(fill = TRUE)
@@ -107,3 +113,37 @@ if(as.vector(df_to_plot_num_deaths$Date)[nrow(df_to_plot_num_deaths)] < date_lat
 
 
 
+
+
+# DATA FOR THE GROWTH CURVE OF THE CASES
+ma = colSums(df_final[,1:(ncol(df_final)-1)])
+# doubling every day
+n_0 = as.numeric(ma[5])
+#lambda=2
+#t=0:(nrow(df_final)-1)
+#n = n_0 * lambda^t
+# doubling every two days
+lambda=2
+t=0:(ncol(df_final)-6)
+n = n_0 * lambda^(t/3)
+doubl_3_days = c(rep(0,4),n)
+# doubling every three days
+lambda=2
+t=0:(ncol(df_final)-6)
+n = n_0 * lambda^(t/4)
+doubl_4_days = c(rep(0,4),n)
+
+df_to_plot=data.frame(
+  Date=as.Date(colnames(df_final[1:(ncol(df_final)-1)])),
+  Cases=ma)
+
+# DATA FOR THE EPI CURVE
+
+cases_by_county = df_final
+
+# sum the data for all the counties / I need to subtract the data of Dukes or Nuntacket because they are
+# duplicated in order to display the map correctly
+data_all_counties=c(colSums(cases_by_county[,1:(length(cases_by_county)-1)]) -
+                      as.numeric(cases_by_county[cases_by_county$NAME=="Dukes", 1:(length(cases_by_county)-1)]),
+                    "All")
+cases_by_county=rbind(cases_by_county,data_all_counties)
