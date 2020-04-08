@@ -15,8 +15,10 @@ ma_spdf = geojson_read("data/cb_2018_ma_county_5m.json",  what = "sp")
 # Download the data from Wikipedia
 library(rvest)    
 url = "https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts"
-raw_data = url %>% 
-  read_html() %>% 
+raw_data_wiki = url %>% 
+  read_html() 
+
+raw_data= raw_data_wiki %>% 
   html_node(xpath = '/html/body/div[3]/div[3]/div[4]/div/table[4]') %>%
   html_table(fill = TRUE)
 
@@ -76,3 +78,32 @@ names_counties = sort(c("All",df_final$NAME))
 write.csv(df_final,file="data/cases_by_county.csv",quote=FALSE,row.names=FALSE)
 
 date_latest_avail_data=colnames(df_final)[ncol(df_final)-1]
+
+
+raw_data_table_deaths = raw_data_wiki %>% 
+  html_node(xpath = '/html/body/div[3]/div[3]/div[4]/div/table[3]') %>%
+  html_table(fill = TRUE)
+# location column of the deaths
+column_deaths = ncol(raw_data_table_deaths) - 2
+df_num_deaths = data.frame(Date=as.Date(paste(raw_data_table_deaths[7:(nrow(raw_data_table_deaths)-2),1],"2020",sep=" "), format = "%B %d %Y"),
+                                        Num_deaths = raw_data_table_deaths[7:(nrow(raw_data_table_deaths)-2),column_deaths],stringsAsFactors = FALSE)
+
+df_num_deaths = df_num_deaths %>% mutate(Num_deaths = ifelse(Num_deaths %in% "", 0, as.numeric(Num_deaths)))
+df_num_deaths[df_num_deaths$Date=="2020-03-20","Num_deaths"]=1
+total_num_deaths = sum(as.numeric(df_num_deaths$Num_deaths))
+ma_population = 6892503
+perc_entire_population = total_num_deaths/ma_population*100
+perc_vs_num_cases = total_num_deaths / (sum(df_final[df_final$NAME!="Nantucket",(ncol(df_final)-1)])) * 100
+
+df_to_plot_num_deaths = df_num_deaths %>% group_by(Date = cut(Date +6, "week", start.on.monday = FALSE)) %>% 
+  summarise(Num_deaths = sum(Num_deaths))
+
+df_to_plot_num_deaths$Date=as.Date(df_to_plot_num_deaths$Date)
+
+# remove last point if I do not have the data for the complete week
+if(as.vector(df_to_plot_num_deaths$Date)[nrow(df_to_plot_num_deaths)] < date_latest_avail_data){
+  df_to_plot_num_deaths = df_to_plot_num_deaths[1:(nrow(df_to_plot_num_deaths)-1),]
+}
+
+
+

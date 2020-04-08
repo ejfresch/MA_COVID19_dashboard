@@ -22,7 +22,7 @@ ui = fluidPage(
     # title
     h1(id="main_title","COVID-19 outbreak in Massachusetts"),
     br(),
-    h2("Epidemic curve of the number of cases"),
+    h2("Epidemic curve"),
     HTML('<p>The following graph shows the number of new COVID-19 cases reported in each county (or All counties) as a function of time. This is a weekly epidemiological curve, to try to avoid some of the fluctuations in the data. To extrapolate some trends you should look at multiple observations.</p>'),
     plotlyOutput("epi_curve"),
     br(),
@@ -107,12 +107,44 @@ ui = fluidPage(
        Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),
            br(),
            br(),
-           HTML("<b>NOTE</b>: the red and orange curves were calculated using the number of cases reported on Mar 9 (n = 43). This is a bit arbitrary, so please consider them as references to follow the curve as it flattens."),
+           HTML("<b>NOTE</b>: the red and orange curves were calculated using the number of cases reported on Mar 9 (n = 43). This is a bit arbitrary, so please consider them as references to follow the grey curve as it flattens."),
            br(),
            br(),
            br(),
     )),
   
+  
+ 
+  
+  
+  
+  
+  fluidRow(
+    column(10,offset=1, align="left",
+           # title
+           h2("Death toll"),
+           HTML(paste("To date ",
+                      total_num_deaths, 
+                      " deaths attributed to COVID-19 were reported in Massachusetts. This number corresponds to ",
+                      format(round(perc_vs_num_cases, 1), nsmall = 1),
+                      "% of the total number of cases and roughly to ",
+                      format(round(perc_entire_population, 2), nsmall = 2),
+                      '% of the entire Massachusetts population (Massachusetts population estimates 2019: 6,892,503; source: <a href="https://www.census.gov/quickfacts/MA">census.gov</a>). ',
+                      "The following graphs shows the number of deaths per week:",
+                      sep="")),
+           br(),
+           plotlyOutput("graph_deaths"),
+           br(),
+    )),
+
+  
+  fluidRow(
+    column(10, offset = 1, align="left",
+           HTML('Data source: <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page.
+       Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),    br(),
+           br(),
+           br(),
+    )),
   
   fluidRow(
     column(10,offset=1, align="left",
@@ -122,12 +154,11 @@ ui = fluidPage(
     )),
   
   
-  
   fluidRow(
     column(10, offset=1, align="left",
          
            br(),
-           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-07'),
+           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-08'),
            br(),
            br()
           

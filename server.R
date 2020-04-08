@@ -139,9 +139,9 @@ server = function(input, output) {
       }
       
       p = ggplot(df_to_plot_epi_curve,aes(x=Date,y=New_cases))+
-         geom_area( fill="#69b3a2", alpha=0.4) +
-         geom_line(color="#69b3a2", size=1) +
-         geom_point(size=2, color="#69b3a2") +
+         geom_area( fill="#de2d26", alpha=0.4) +
+         geom_line(color="#de2d26", size=1) +
+         geom_point(size=2, color="#de2d26") +
          xlab("Week") + 
          ylab("New cases")+
          scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
@@ -150,6 +150,18 @@ server = function(input, output) {
    })
    
    
-   
+   output$graph_deaths = renderPlotly({
+      
+     
+      p = ggplot(df_to_plot_num_deaths,aes(x=Date,y=Num_deaths))+
+         geom_area( fill="#252525", alpha=0.4) +
+         geom_line(color="#252525", size=1) +
+         geom_point(size=2, color="#252525") +
+         xlab("Week") + 
+         ylab("Number of deaths")+
+         scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
+      ggplotly(p)
+      
+   })
     
 }
