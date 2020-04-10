@@ -48,6 +48,7 @@ server = function(input, output, session) {
             geom_point(shape=19, size=2, color="#525252") +
             xlab("Date") + 
             ylab("Number of cases") +
+            ylim(c(0,40000)) +
             scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
          
       }else{
@@ -57,6 +58,7 @@ server = function(input, output, session) {
             geom_point(shape=19, size=2, color="#525252") +
             xlab("Date") + 
             ylab("Number of cases")+
+            ylim(c(0,40000)) +
             scale_y_log10() + 
             scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
       }
@@ -93,10 +95,15 @@ server = function(input, output, session) {
          df_to_plot_epi_curve = df_to_plot_epi_curve[1:(nrow(df_to_plot_epi_curve)-1),]
       }
       
+      #first_value = df_to_plot_epi_curve[1,]
+      #last_value = df_to_plot_epi_curve[nrow(df_to_plot_epi_curve),]
+      
       p = ggplot(df_to_plot_epi_curve,aes(x=Date,y=New_cases))+
          geom_area( fill="#de2d26", alpha=0.4) +
          geom_line(color="#de2d26", size=1) +
          geom_point(size=2, color="#de2d26") +
+         #geom_point(data=first_value, aes(x=Date,y=New_cases),size=2, color="#de2d26") +
+         #geom_point(data=last_value, aes(x=Date,y=New_cases),size=2, color="#de2d26") +
          xlab("Week") + 
          ylab("New cases")+
          scale_x_date(date_breaks = "1 week", date_labels = "%b %d")

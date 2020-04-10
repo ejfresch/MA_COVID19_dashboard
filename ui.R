@@ -15,8 +15,7 @@ ui = fluidPage(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "myTheme.css")
   ),
-  tags$head(includeHTML("google_analytics.html")),
-  
+
   fluidRow(
     column(10,offset=1, align="left",
     # title
@@ -127,7 +126,7 @@ ui = fluidPage(
                       total_num_deaths, 
                       " deaths attributed to COVID-19 were reported in Massachusetts. This number corresponds to ",
                       format(round(perc_vs_num_cases, 1), nsmall = 1),
-                      "% of the total number of cases and roughly to ",
+                      "% of the total number of reported cases and roughly to ",
                       format(round(perc_entire_population, 3), nsmall = 3),
                       '% of the entire Massachusetts population (Massachusetts population estimates 2019: 6,892,503; source: <a href="https://www.census.gov/quickfacts/MA">census.gov</a>). ',
                       "The following graphs shows the number of deaths per week:",
@@ -158,7 +157,7 @@ ui = fluidPage(
     column(10, offset=1, align="left",
          
            br(),
-           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-08'),
+           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-09'),
            br(),
            br()
           

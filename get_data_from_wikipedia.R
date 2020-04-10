@@ -6,7 +6,7 @@ raw_data = raw_data_wiki %>%
   html_table(fill = TRUE)
 
 # CREATE AN HASH
-stored_data_hash = digest(raw_data_wiki, "md5")
+stored_data_hash = digest(raw_data_wiki %>% html_text(), "md5")
 
 # Format the data
 
