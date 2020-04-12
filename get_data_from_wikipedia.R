@@ -99,7 +99,7 @@ if(as.vector(df_to_plot_num_deaths$Date)[nrow(df_to_plot_num_deaths)] < date_lat
 
 
 # DATA FOR THE GROWTH CURVE OF THE CASES
-ma = colSums(df_final[,1:(ncol(df_final)-1)])
+ma = colSums(df_final[df_final$NAME!="Nantucket",1:(ncol(df_final)-1)])
 # doubling every day
 n_0 = as.numeric(ma[5])
 #lambda=2
@@ -147,4 +147,16 @@ save(stored_data_hash,
      date_latest_avail_data,
      file = "data/collection.Rdata")
 
+}
+
+
+
+
+force_data_download = function(){
+  rm(stored_data_hash)
+  url = "https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts"
+  r_data_wiki = url %>% 
+    read_html() 
+  get_data_from_wiki(r_data_wiki)
+  
 }

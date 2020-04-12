@@ -157,7 +157,7 @@ ui = fluidPage(
     column(10, offset=1, align="left",
          
            br(),
-           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-09'),
+           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-10'),
            br(),
            br()
           

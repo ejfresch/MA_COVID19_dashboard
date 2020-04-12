@@ -42,10 +42,16 @@ server = function(input, output, session) {
       
       
       choice = input$choose_type
+      
+      first_value = df_to_plot[1,]
+      last_value = df_to_plot[nrow(df_to_plot),]
+      
       if(choice == "Linear"){
          p=ggplot(data=df_to_plot, aes(x=Date, y=Cases, group=1)) +
-            geom_line(size=1, color="#636363")+
-            geom_point(shape=19, size=2, color="#525252") +
+            geom_path(size=1, color="#636363",lineend="round", linejoin = "round",)+
+            geom_point(data=first_value, aes(x=Date,y=Cases),size=2, color="#525252") +
+            geom_point(data=last_value, aes(x=Date,y=Cases),size=2, color="#525252") +
+            #geom_point(shape=19, size=2, color="#525252") +
             xlab("Date") + 
             ylab("Number of cases") +
             ylim(c(0,40000)) +
@@ -54,8 +60,10 @@ server = function(input, output, session) {
       }else{
          
          p=ggplot(data=df_to_plot, aes(x=Date, y=Cases, group=1)) +
-            geom_line(size=1, color="#636363")+
-            geom_point(shape=19, size=2, color="#525252") +
+            geom_path(size=1, color="#636363", lineend="round",linejoin = "round")+
+            geom_point(data=first_value, aes(x=Date,y=Cases),size=2, color="#525252") +
+            geom_point(data=last_value, aes(x=Date,y=Cases),size=2, color="#525252") +
+            #geom_point(shape=19, size=2, color="#525252") +
             xlab("Date") + 
             ylab("Number of cases")+
             ylim(c(0,40000)) +
@@ -67,7 +75,7 @@ server = function(input, output, session) {
                      geom_line(aes(x=Date, y = doubl_4_days), color = "orange", linetype = "dotted")
                   
       )
-      w %>% style(hoverinfo = "skip", traces = c(2,3))
+      w %>% style(hoverinfo = "skip", traces = c(2,3,4,5))
       
    })
    
