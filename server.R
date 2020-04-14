@@ -47,7 +47,7 @@ server = function(input, output, session) {
       last_value = df_to_plot[nrow(df_to_plot),]
       
       if(choice == "Linear"){
-         p=ggplot(data=df_to_plot, aes(x=Date, y=Cases, group=1)) +
+         p=ggplot(data=df_to_plot, aes(x=Date, y=Cases, group=1, label = New_cases)) +
             geom_path(size=1, color="#636363",lineend="round", linejoin = "round",)+
             geom_point(data=first_value, aes(x=Date,y=Cases),size=2, color="#525252") +
             geom_point(data=last_value, aes(x=Date,y=Cases),size=2, color="#525252") +
@@ -56,21 +56,22 @@ server = function(input, output, session) {
             ylab("Number of cases") +
             ylim(c(0,40000)) +
             scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
+
          
       }else{
          
-         p=ggplot(data=df_to_plot, aes(x=Date, y=Cases, group=1)) +
+         p=ggplot(data=df_to_plot, aes(x=Date, y=Cases, group=1, label = New_cases)) +
             geom_path(size=1, color="#636363", lineend="round",linejoin = "round")+
             geom_point(data=first_value, aes(x=Date,y=Cases),size=2, color="#525252") +
             geom_point(data=last_value, aes(x=Date,y=Cases),size=2, color="#525252") +
             #geom_point(shape=19, size=2, color="#525252") +
-            xlab("Date") + 
+            xlab("Time") + 
             ylab("Number of cases")+
             ylim(c(0,40000)) +
             scale_y_log10() + 
             scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
-      }
-      w =ggplotly(p + 
+         }
+      w =ggplotly(p  + 
                      geom_line(aes(x=Date, y = doubl_3_days), color = "red", linetype = "dotted") +
                      geom_line(aes(x=Date, y = doubl_4_days), color = "orange", linetype = "dotted")
                   
@@ -93,44 +94,48 @@ server = function(input, output, session) {
       vect_new_cases = n_cases_selected_county - vect_for_diff
       df_new_cases = data.frame(Date=as.Date(colnames(numbers)[1:(length(numbers)-1)]),
                                 New_cases=vect_new_cases)
-      df_to_plot_epi_curve = df_new_cases %>% group_by(Date = cut(Date +6, "week", start.on.monday = FALSE)) %>% 
-         summarise(New_cases = sum(New_cases))
+      df_to_plot_epi_curve = df_new_cases
       
       df_to_plot_epi_curve$Date=as.Date(df_to_plot_epi_curve$Date)
       
-      # remove last point if I do not have the data for the complete week
-      if(as.vector(df_to_plot_epi_curve$Date)[nrow(df_to_plot_epi_curve)] < date_latest_avail_data){
-         df_to_plot_epi_curve = df_to_plot_epi_curve[1:(nrow(df_to_plot_epi_curve)-1),]
-      }
       
       #first_value = df_to_plot_epi_curve[1,]
       #last_value = df_to_plot_epi_curve[nrow(df_to_plot_epi_curve),]
       
       p = ggplot(df_to_plot_epi_curve,aes(x=Date,y=New_cases))+
-         geom_area( fill="#de2d26", alpha=0.4) +
-         geom_line(color="#de2d26", size=1) +
-         geom_point(size=2, color="#de2d26") +
+         #geom_area( fill="#de2d26", alpha=0.4) +
+         #geom_line(color="#de2d26", size=1) +
+         geom_point(size=1.5, color="#525252",alpha=0.5) +
+         geom_smooth(method="loess",color="#de2d26",formula=y~x,se=FALSE)+
+         geom_ribbon(stat = "smooth", method = "loess", alpha = .15,fill="#de2d26",formula=y~x)+
          #geom_point(data=first_value, aes(x=Date,y=New_cases),size=2, color="#de2d26") +
          #geom_point(data=last_value, aes(x=Date,y=New_cases),size=2, color="#de2d26") +
-         xlab("Week") + 
+         xlab("Time") + 
          ylab("New cases")+
          scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
-      ggplotly(p)
+      ggplotly(p) %>% style(hoverinfo = "skip", traces = c(2,3))
       
    })
    
    
    output$graph_deaths = renderPlotly({
       
+      first_value = df_to_plot_num_deaths[1,]
+      last_value = df_to_plot_num_deaths[nrow(df_to_plot_num_deaths),]
       
       p = ggplot(df_to_plot_num_deaths,aes(x=Date,y=Num_deaths))+
-         geom_area( fill="#252525", alpha=0.4) +
-         geom_line(color="#252525", size=1) +
-         geom_point(size=2, color="#252525") +
-         xlab("Week") + 
+         geom_point(size=1.5, color="#525252",alpha=0.5) +
+         geom_smooth(method="loess",color="#252525",formula=y~x,se=FALSE)+
+         geom_ribbon(stat = "smooth", method = "loess", alpha = .15,fill="#252525",formula=y~x)+
+         #geom_area( fill="#252525", alpha=0.4) +
+         #geom_line(color="#252525", size=1) +
+         #geom_point(data=first_value, aes(x=Date,y=Num_deaths),size=2, color="#252525") +
+         #geom_point(data=last_value, aes(x=Date,y=Num_deaths),size=2, color="#252525") +
+         #geom_point(size=2, color="#252525") +
+         xlab("Time") + 
          ylab("Number of deaths")+
          scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
-      ggplotly(p)
+      ggplotly(p) %>% style(hoverinfo = "skip", traces = c(2,3))
       
    })
    
