@@ -22,7 +22,10 @@ ui = fluidPage(
     h1(id="main_title","COVID-19 outbreak in Massachusetts"),
     br(),
     h2("Epidemic curve"),
-    HTML('<p>The following graph shows the number of new COVID-19 cases reported in each county (or All counties) as a function of time. This is a weekly epidemiological curve, to try to avoid some of the fluctuations in the data. To extrapolate some trends you should look at multiple observations.</p>'),
+    HTML(paste(
+      '<p>The following graph shows the number of new COVID-19 cases reported in each county (or All counties) as a function of time. The dots represent the raw data. The trend line is a loess fit. The red area describes the confidence interval for the loess fit.',
+      "</p>",
+      sep="")),
     plotlyOutput("epi_curve"),
     br(),
     )),
@@ -35,10 +38,9 @@ ui = fluidPage(
 
   fluidRow(
     column(10, offset = 1, align="left",
-           HTML('Data source: <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page.
-       Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),    br(),
+           HTML('Data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),    br(),
     br(),
-    HTML("<b>NOTE</b>: if you do not know to which county your city/town belongs to, you can use the map below to find out. The data for the Dukes and Nantucket counties are combined in the reports of the MA Department of Public Health. Here we display the combined number of cases (Dukes + Nantucket) for both counties."),
+    HTML("<b>NOTE</b>: if you do not know to which county your city/town belongs to, you can use the map below to find out."),
     br(),
     br(),
     br(),
@@ -71,10 +73,7 @@ ui = fluidPage(
   
   fluidRow(
     column(10, offset=1, align="left",
-    HTML('Data source: <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page.
-       Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),
-    br(),
-    HTML('<br /><b>NOTE:</b> the data for the Dukes and Nantucket counties are combined in the reports of the MA Department of Public Health. Here we display the combined number of cases (Dukes + Nantucket) in both counties.'),
+    HTML('Data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),
     br(),
     br(),
     br(),
@@ -102,8 +101,7 @@ ui = fluidPage(
   
   fluidRow(
     column(10, offset = 1, align="left",
-           HTML('Data source: <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page.
-       Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),
+           HTML('Data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),
            br(),
            br(),
            HTML("<b>NOTE</b>: the red and orange curves were calculated using the number of cases reported on Mar 9 (n = 43). This is a bit arbitrary, so please consider them as references to follow the grey curve as it flattens."),
@@ -122,14 +120,15 @@ ui = fluidPage(
     column(10,offset=1, align="left",
            # title
            h2("Death toll"),
-           HTML(paste("To date ",
+           HTML(paste("<p>",
                       total_num_deaths, 
                       " deaths attributed to COVID-19 were reported in Massachusetts. This number corresponds to ",
                       format(round(perc_vs_num_cases, 1), nsmall = 1),
                       "% of the total number of reported cases and roughly to ",
                       format(round(perc_entire_population, 3), nsmall = 3),
                       '% of the entire Massachusetts population (Massachusetts population estimates 2019: 6,892,503; source: <a href="https://www.census.gov/quickfacts/MA">census.gov</a>). ',
-                      "The following graphs shows the number of deaths per week:",
+                      "</p><p>",
+                      "The following graph shows the number of deaths as a function of time (daily number of deaths). The dots represent the raw data. The trend line is a loess fit. The dark gray area describes the confidence interval for the loess fit.",
                       sep="")),
            br(),
            plotlyOutput("graph_deaths"),
@@ -139,8 +138,7 @@ ui = fluidPage(
   
   fluidRow(
     column(10, offset = 1, align="left",
-           HTML('Data source: <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page.
-       Original data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),    br(),
+           HTML('Data: <a href="https://www.mass.gov/orgs/department-of-public-health">Massachusetts Department of Public Health</a>.'),    br(),
            br(),
            br(),
     )),
@@ -148,7 +146,7 @@ ui = fluidPage(
   fluidRow(
     column(10,offset=1, align="left",
            h2("Updates and feedback"),
-           HTML('<p>The graphs are automatically updated using the data available on the <a href="https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Massachusetts">2020_coronavirus_pandemic_in_Massachusetts</a> Wikipedia page. If you find any mistake or you think this app can be improved, plase send an e-mail to <img src="email.png"/></p>'),
+           HTML('<p>The graphs are updated daily. If you find any mistake or you think this app can be improved, plase send an e-mail to <img src="email.png"/></p>'),
            br(),
     )),
   
@@ -157,7 +155,7 @@ ui = fluidPage(
     column(10, offset=1, align="left",
          
            br(),
-           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-10'),
+           HTML('Author: Luca Freschi; Licence: <a href="https://creativecommons.org/licenses/by/4.0/deed.ast">CC-BY-4.0</a>; Last review: 2020-04-13'),
            br(),
            br()
           
