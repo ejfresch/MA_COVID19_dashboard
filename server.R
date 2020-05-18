@@ -54,7 +54,7 @@ server = function(input, output, session) {
             #geom_point(shape=19, size=2, color="#525252") +
             xlab("Date") + 
             ylab("Number of cases") +
-            ylim(c(0,40000)) +
+            ylim(c(0,100000)) +
             scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
 
          
@@ -67,7 +67,7 @@ server = function(input, output, session) {
             #geom_point(shape=19, size=2, color="#525252") +
             xlab("Time") + 
             ylab("Number of cases")+
-            ylim(c(0,40000)) +
+            ylim(c(0,100000)) +
             scale_y_log10() + 
             scale_x_date(date_breaks = "1 week", date_labels = "%b %d")
          }

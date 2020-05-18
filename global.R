@@ -9,6 +9,7 @@ library(mapproj)
 library(reshape2)
 library(digest)
 library(lubridate)
+library(shinycssloaders)
 
 
 #shapes polygons for leaflet
